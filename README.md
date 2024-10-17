@@ -1,3 +1,7 @@
+#
+
+Icon: <a href="https://www.flaticon.com/free-icons/conductor" title="conductor icons">Conductor icons created by Freepik - Flaticon</a>
+
 # Svelte-Kit + Vite
 
 This template should help get you started developing with Tauri and Svelte-Kit in Vite.

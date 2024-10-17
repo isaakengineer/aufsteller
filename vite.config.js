@@ -12,6 +12,13 @@ export default defineConfig({
   server: {
     port: 1420,
     strictPort: true,
+      watch: {
+      // Isaak Engineer: deno kann mit `watch` nicht gut arbeiten, siehe: https://github.com/denoland/deno/issues/17757
+		useFsEvents: false,
+    	usePolling: true,
+      // 3. tell vite to ignore watching `src-tauri`
+      ignored: ["**/src-tauri/**"],
+    },
   },
   // to make use of `TAURI_DEBUG` and other env variables
   // https://tauri.studio/v1/api/config#buildconfig.beforedevcommand
