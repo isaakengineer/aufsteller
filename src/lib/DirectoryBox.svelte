@@ -1,7 +1,7 @@
 <script>
 	import { invoke } from '@tauri-apps/api/core';
-	import { onMount } from "svelte";
-
+	import { onMount, createEventDispatcher } from "svelte";
+	const dispatch = createEventDispatcher()
 	let input = {}
 	onMount( async () => {
 		let config = await invoke("dashboard_config_load", {
@@ -14,17 +14,17 @@
 		input = JSON.parse(config);
 	});
 	import Directory from '$lib/icon/Directory.svelte';
+
+
+
 </script>
 
 {#if input.hasOwnProperty('opener')}
-<header>
-	Directories
-</header>
-<div class="app_repos">
 	{#each Object.keys(input.workspaces) as workspace}
-		<div class="workspaces">
+		<div class="faechern grid-item">
 			{#if input.workspaces[workspace].length > 0}
 				<div class="accordion" on:click={(e) => {
+
 					let src = e.srcElement;
 					let panel = src.nextElementSibling;
 					src.classList.toggle("active");
@@ -33,6 +33,7 @@
 					} else {
 						panel.style.maxHeight = panel.scrollHeight + "px";
 					}
+					dispatch('masonryRefresh')
 					console.log()}}>
 					{workspace}
 				</div>
@@ -43,8 +44,8 @@
 							on:click={() => {invoke("directory_open", {
 								opener: input.opener,
 								path: dir.path
-							}
-							)}}>
+							});
+							}}>
 							<div class="icon"><Directory /></div>
 							<div class="name">{dir.name}</div>
 							<div class="path">{dir.path}</div>
@@ -54,12 +55,17 @@
 				{/if}
 			</div>
 	{/each}
-</div>
 {/if}
 
 <style lang="scss">
-.workspaces {
+.faechern {
 	margin-top: .5rem;
+	background-color: lightyellow !important;
+	border-color: orangered !important;
+	max-width: 30rem;
+	> .accordion {
+		color: orangered;
+	}
 }
 .directory {
 
@@ -72,11 +78,11 @@
 		background-color: rgb(231, 229, 229);
 	}
 	> .name {
-
+		font-size: .9rem;
 	}
 	> .path {
 		color: gray;
-		font-size: .9rem;
+		font-size: .7rem;
 		grid-column-start: 2;
 	}
 	> .icon {
@@ -92,10 +98,7 @@
  /* Style the buttons that are used to open and close the accordion panel */
 .accordion {
 	box-sizing: border-box;
-  background-color: #eee;
-  // color: #444;
   cursor: pointer;
-  padding: .5rem;
   width: 100%;
   text-align: left;
   border: none;
@@ -126,6 +129,6 @@
   background-color: white;
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.2s ease-out;
+  /* transition: max-height 0.2s ease-out; */
 }
 </style>

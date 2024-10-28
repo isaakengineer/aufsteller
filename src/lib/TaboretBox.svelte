@@ -19,12 +19,12 @@
 </script>
 
 {#if input.hasOwnProperty('name')}
-<header>
+<!-- <header>
 	{input.name}
-</header>
-<div class="app_repos">
+</header> -->
+<!-- <div class="app_repos"> -->
 	{#each Object.keys(input.workspaces) as workspace}
-		<div class="workspaces">
+		<div class="workspaces grid-item">
 			{#if input.workspaces[workspace].length > 0}
 				<header>{workspace}</header>
 				<div class="list">
@@ -42,7 +42,7 @@
 			{/if}
 		</div>
 	{/each}
-</div>
+<!-- </div> -->
 {/if}
 
 <style lang="scss">
@@ -54,17 +54,28 @@
 }
 .workspaces {
 	width: fit-content;
+	height: fit-content;
 	padding: 0px;
-	margin: 0px;
+	margin: .5rem;
+	min-width: 11rem;
+	max-width: 40rem;
+	color: white;
 	> header {
-		padding: .2rem;
-		border-bottom: 2px solid black;
+		padding: .5rem 1rem;
+		border-bottom: 2px solid #999;
 	}
 	.list {
 		> div {
-			padding: .2rem;
+			padding: .5rem 1rem;
+			cursor: pointer;
+			&:hover {
+				background-color: #666;
+			}
+			&:last-child {
+				border-radius: 0px 0px 1rem 1rem;
+			}
 			&:before {
-				content: "-";
+				/* content: "-"; */
 				padding: .2rem;
 			}
 		}

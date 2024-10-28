@@ -1,58 +1,150 @@
 <script>
-  import Greet from "$lib/Greet.svelte";
-  export let data;
+	import { invoke } from '@tauri-apps/api/core';
+	import Masonry from 'masonry-layout';
+	import { onMount } from 'svelte';
+	import Greet from "$lib/Greet.svelte";
+	export let data;
 
-  import { invoke } from '@tauri-apps/api/core';
+	let items = [];
 
-  async function projectOpen(project) {
-    console.log(project)
-    let projects = await invoke("project_on", {name: project});
-  }
-  import WebAppBox from "$lib/WebAppBox.svelte";
-  import MonitorSwitch from "$lib/MonitorSwitch.svelte";
-  import TaboretBox from "$lib/TaboretBox.svelte";
-  import DirectoryBox from "$lib/DirectoryBox.svelte";
+	async function projectOpen(project) {
+		console.log(project)
+		let projects = await invoke("project_on", {name: project});
+	}
+
+	let elem;
+	let msnry;
+	let refreshFunc = () => {};
+	onMount( async () => {
+		let config_web = await invoke("dashboard_config_load", {
+			name: "webapp.json"
+		}).then((data) => {
+			return data
+		}).catch((err) => {
+			console.log(err)
+		});
+		let links = JSON.parse(config_web);
+
+		let config_dir = await invoke("dashboard_config_load", {
+			name: "directory.json"
+		}).then((data) => {
+			return data
+		}).catch((err) => {
+			console.log(err)
+		});
+		let dirs = JSON.parse(config_dir);
+		console.log("these are dirs", dirs)
+		console.log("these are links", links)
+		items = items.concat(Object.keys(links));
+		items = items.concat(Object.keys(dirs.workspaces));
+		console.log("before items", items)
+
+		elem = document.querySelector('.grid');
+		msnry = new Masonry( elem, {
+			// options
+			itemSelector: '.grid-item',
+			columnWidth: 200,
+			// initLayout: false
+		});
+		console.log("this masonry", msnry);
+
+		// refreshFunc = msnry.layout;
+		// refreshFunc()
+	});
+	console.log("these are items")
+	console.log(items)
+
+	function draw() {
+		msnry = undefined;
+		let elem_2 = document.querySelector('.grid');
+		let msnry_2 = new Masonry( elem, {
+			// options
+			itemSelector: '.grid-item',
+			columnWidth: 200,
+			initLayout: false
+		});
+		msnry_2.layout()
+		console.log("to refresh")
+
+	}
+	import WebAppBox from "$lib/WebAppBox.svelte";
+	import MonitorSwitch from "$lib/MonitorSwitch.svelte";
+	import TaboretBox from "$lib/TaboretBox.svelte";
+	import DirectoryBox from "$lib/DirectoryBox.svelte";
+
+
 </script>
 
-<div class="workspace-conductor-app essential">
-  <main class="dashboards">
-    <section>
-      <MonitorSwitch />
-    </section>
-    <section>
-      <TaboretBox />
-    </section>
-    <section>
-      <DirectoryBox />
-    </section>
-    <section>
-      <WebAppBox />
-    </section>
-  </main>
-  <div class="drawer dashboard-container dashboard view-dashboard">
-    <div class="control-tabs">
-      {#each data.projects as project}
-          <div class="tab">
-            <span>{project}</span>
-          <button class="action" on:click={() => {
-            console.log(project)
-            projectOpen(project)}}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-power" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-              <path d="M7 6a7.75 7.75 0 1 0 10 0" />
-              <line x1="12" y1="4" x2="12" y2="12" />
-            </svg>
-          </button>
-        </div>
-      {/each}
+<div class="aufsteller">
+	<div class="notizen"></div>
+	<div class="kommande"></div>
+	<div class="informationen"></div>
+	<div class="arbeitsumgebung">
+		<nav>
+			<div>Default</div>
+		</nav>
+	</div>
+	<div class="applikationen"></div>
+	<div class="zeuge">
+		<MonitorSwitch />
+	</div>
+	<div class="boxen grid" >
+		<!-- <Masonry stretchFirst={true} > -->
+			<TaboretBox />
+			<DirectoryBox on:masonryRefresh={() => {
+
+				setTimeout(draw(), 10000)}
+			} />
+			<WebAppBox />
+		<!-- </Masonry> -->
     </div>
-  </div>
-</div>
-<div class="row">
+	<div class="drawer dashboard-container dashboard view-dashboard">
+		<section>
+
+		</section>
+	</div>
 </div>
 
 <style lang="scss">
+.boxen {
+	display: grid;
+	gap: 10px;
+	grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+	grid-template-rows: masonry;
+}
+.aufsteller {
+	width: 100vw;
+	height: 100vh;
+	display: grid;
+	grid-template-areas:
+		"boxen arbeitsumgebung zeuge"
+		"boxen arbeitsumgebung applikationen"
+		"boxen arbeitsumgebung notizen"
+		"informationen informationen notizen"
+		"informationen informationen kommande";
+	grid-template-columns: 12fr 1fr 3fr;
+	grid-template-rows: 4fr 2fr 8fr 1fr;
+	overflow: hidden;
+	> .notizen { grid-area: notizen; }
+	> .kommande { grid-area: kommande; }
+	> .informationen { grid-area: informationen; }
+	> .arbeitsumgebung { grid-area: arbeitsumgebung; }
+	> .applikationen { grid-area: applikationen; }
+	> .boxen { grid-area: boxen; }
+	> .zeuge { grid-area: zeuge; }
+}
+.aufsteller {
+	> div {
+		box-sizing: border-box;
+		padding: 1rem;
+		:global(> div) {
+			padding: .8rem;
+			background-color: #333;
+			border: 2px solid gray;
+			border-radius: 1rem;
+		}
+	}
+}
 .essential { background-color: transparent !important; }
 
 .dashboards {
