@@ -1,11 +1,16 @@
 <script>
-	import { invoke } from '@tauri-apps/api/core';
+	import { invoke, convertFileSrc } from '@tauri-apps/api/core';
 	import Masonry from 'masonry-layout';
 	import { onMount } from 'svelte';
 	import Greet from "$lib/Greet.svelte";
 	export let data;
 
 	let items = [];
+
+	let Ausstattung = {
+		album: true,
+		notizen: false,
+	}
 
 	async function projectOpen(project) {
 		console.log(project)
@@ -15,7 +20,12 @@
 	let elem;
 	let msnry;
 	let refreshFunc = () => {};
+	let bildern = [];
+	let bildernIndex = 0;
+
 	onMount( async () => {
+		bildern = await invoke("album_init");
+		console.log("bildern", bildern);
 		let config_web = await invoke("dashboard_config_load", {
 			name: "webapp.json"
 		}).then((data) => {
@@ -76,8 +86,23 @@
 </script>
 
 <div class="aufsteller">
-	<div class="notizen"></div>
-	<div class="kommande"></div>
+	<div class="notizen">
+		{#if Ausstattung.album}
+			<div class="album">
+				{#each [bildern[bildernIndex]] as bild }
+					<img transition:fade src={convertFileSrc(bild)} />
+				{/each}
+				<div class="albumkontrollen">
+					<button on:click={() => { bildernIndex = ((bildernIndex == 0) ? bildern.length : bildernIndex) - 1 }}>Vorherrige</button>
+					<button on:click={() => { bildernIndex = (bildernIndex + 1) % bildern.length }}>Nächste</button>
+				</div>
+			</div>
+		{:else if Ausstattung.notizen}
+		{/if}
+	</div>
+	<div class="kommande">
+		<div>Kommande Here</div>
+	</div>
 	<div class="informationen"></div>
 	<div class="arbeitsumgebung">
 		<nav>
@@ -98,14 +123,28 @@
 			<WebAppBox />
 		<!-- </Masonry> -->
     </div>
-	<div class="drawer dashboard-container dashboard view-dashboard">
-		<section>
-
-		</section>
-	</div>
 </div>
 
 <style lang="scss">
+.album {
+	box-sizing: border-box;
+	height: 100%;
+	overflow-y: scroll;
+	padding: 1.25rem !important;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	justify-content: space-between;
+	img {
+		border-radius: .5rem .5rem 0 0;
+		width: 100%;
+		max-height: 90%;
+	}
+	> .albumkontrollen {
+		display: flex;
+		justify-content: space-between;
+	}
+}
 .boxen {
 	display: grid;
 	gap: 10px;
@@ -115,15 +154,19 @@
 .aufsteller {
 	width: 100vw;
 	height: 100vh;
+	overflow: hidden;
 	display: grid;
+	padding: .8rem;
+	box-sizing: border-box;
+	gap: .8rem;
 	grid-template-areas:
-		"boxen arbeitsumgebung zeuge"
-		"boxen arbeitsumgebung applikationen"
-		"boxen arbeitsumgebung notizen"
-		"informationen informationen notizen"
-		"informationen informationen kommande";
-	grid-template-columns: 12fr 1fr 3fr;
-	grid-template-rows: 4fr 2fr 8fr 1fr;
+		"boxen 			arbeitsumgebung zeuge"
+		"boxen 			arbeitsumgebung applikationen"
+		"boxen 			arbeitsumgebung notizen"
+		"informationen 	informationen 	notizen"
+		"informationen 	informationen 	kommande";
+	grid-template-columns: 12fr 15rem 3fr;
+	grid-template-rows: 1fr 5rem 1fr 4fr 5rem;
 	overflow: hidden;
 	> .notizen { grid-area: notizen; }
 	> .kommande { grid-area: kommande; }
@@ -132,16 +175,20 @@
 	> .applikationen { grid-area: applikationen; }
 	> .boxen { grid-area: boxen; }
 	> .zeuge { grid-area: zeuge; }
+	> div {
+	}
 }
 .aufsteller {
 	> div {
-		box-sizing: border-box;
-		padding: 1rem;
+		/* box-sizing: border-box;
+		padding: 1rem; */
+
 		:global(> div) {
 			padding: .8rem;
 			background-color: #333;
 			border: 2px solid gray;
 			border-radius: 1rem;
+			box-shadow: 0px 0px .5rem rgba(0, 0, 0, .8);
 		}
 	}
 }
