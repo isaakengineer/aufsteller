@@ -1,7 +1,7 @@
 {
-  "name": "conductor",
+  "name": "aufsteller",
   "private": true,
-  "version": "0.0.0",
+  "version": "2.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite dev",
@@ -16,6 +16,8 @@
     "@tauri-apps/api": ">=2.0.0",
     "@tauri-apps/plugin-cli": "~2.0.0",
     "@tauri-apps/plugin-shell": ">=2.0.0",
+    "masonry-layout": "^4.2.2",
+    "svelte-bricks": "^0.2.1",
     "svelte-preprocess": "^5.0.3"
   },
   "devDependencies": {
