@@ -2,6 +2,7 @@
 	import { invoke, convertFileSrc } from '@tauri-apps/api/core';
 	import Masonry from 'masonry-layout';
 	import { onMount } from 'svelte';
+	import { fade, slide, blur } from 'svelte/transition';
 	import Greet from "$lib/Greet.svelte";
 	export let data;
 
@@ -22,9 +23,13 @@
 	let refreshFunc = () => {};
 	let bildern = [];
 	let bildernIndex = 0;
+	let notizen = [];
+	let notizenIndex = 0;
 
 	onMount( async () => {
 		bildern = await invoke("album_init");
+		notizen = await invoke("notizen_init");
+
 		console.log("bildern", bildern);
 		let config_web = await invoke("dashboard_config_load", {
 			name: "webapp.json"
@@ -88,20 +93,39 @@
 <div class="aufsteller">
 	<div class="notizen">
 		{#if Ausstattung.album}
-			<div class="album">
-				{#each [bildern[bildernIndex]] as bild }
-					<img transition:fade src={convertFileSrc(bild)} />
-				{/each}
+			<div class="album" transition:slide|global>
+				<div class="bilderrahmen">
+					{#key bildernIndex}
+						<img in:blur={{ duration: 800 }} out:fade src={convertFileSrc(bildern[bildernIndex])} />
+					{/key}
+				</div>
 				<div class="albumkontrollen">
 					<button on:click={() => { bildernIndex = ((bildernIndex == 0) ? bildern.length : bildernIndex) - 1 }}>Vorherrige</button>
+					<button on:click={() => { Ausstattung.notizen = true; Ausstattung.album = false; }}>Notizen</button>
 					<button on:click={() => { bildernIndex = (bildernIndex + 1) % bildern.length }}>Nächste</button>
 				</div>
 			</div>
 		{:else if Ausstattung.notizen}
+			<div transition:slide|global>
+				<div class="notizenkontrollen">
+					<button on:click={() => { Ausstattung.notizen = false; Ausstattung.album = true; }}>Album</button>
+					<button on:click={() => { }}>Open</button>
+				</div>
+				<div class="notizrahmen">
+					{#each notizen as notiz, i }
+						<div class="notiz">
+							<header on:click={() => { notizenIndex = i; }}>{notiz.name}</header>
+							{#if notizenIndex == i}
+								<div class="inhalt" transition:slide>{notiz.inhalt}</div>
+							{/if}
+						</div>
+					{/each}
+				</div>
+			</div>
 		{/if}
 	</div>
 	<div class="kommande">
-		<div>Kommande Here</div>
+		<!-- <div>Kommande Here</div> -->
 	</div>
 	<div class="informationen"></div>
 	<div class="arbeitsumgebung">
@@ -126,6 +150,40 @@
 </div>
 
 <style lang="scss">
+button {
+	padding: .3rem .8rem;
+}
+.notizrahmen {
+	background-color: transparent !important;
+	padding: 0px !important;
+	border: none !important;
+	display: flex;
+	flex-direction: column;
+	gap: .2rem;
+	> .notiz {
+		background-color: lightyellow;
+		box-shadow: 0px 0px .5rem rgba(0, 0, 0, .8);
+		> header {
+			padding: .1rem .5rem;
+			border-bottom: 1px dashed yellow;
+			font-size: .9rem;
+			&:hover { cursor: pointer;}
+		}
+		> .inhalt {
+			padding: .5rem 1rem;
+			color: #000;
+		}
+	}
+}
+.notizen > div {
+	box-shadow: none;
+	background-color: transparent !important;
+	border: none;
+}
+.notizen .notizenkontrollen {
+	display: flex;
+	justify-content: space-between;
+}
 .album {
 	box-sizing: border-box;
 	height: 100%;
@@ -135,10 +193,19 @@
 	flex-direction: column;
 	gap: 1rem;
 	justify-content: space-between;
-	img {
-		border-radius: .5rem .5rem 0 0;
-		width: 100%;
+	> .bilderrahmen {
+		flex-grow: 1;
 		max-height: 90%;
+		overflow: hidden;
+	}
+	img {
+		display: block;
+		margin-right: auto;
+		margin-left: auto;
+		border-radius: .5rem;
+		box-shadow: 0px 0px .5rem rgba(0, 0, 0, .8);
+		max-width: 100%;
+		max-height: 100%;
 	}
 	> .albumkontrollen {
 		display: flex;
@@ -165,7 +232,7 @@
 		"boxen 			arbeitsumgebung notizen"
 		"informationen 	informationen 	notizen"
 		"informationen 	informationen 	kommande";
-	grid-template-columns: 12fr 15rem 3fr;
+	grid-template-columns: 16fr 10rem 3fr;
 	grid-template-rows: 1fr 5rem 1fr 4fr 5rem;
 	overflow: hidden;
 	> .notizen { grid-area: notizen; }

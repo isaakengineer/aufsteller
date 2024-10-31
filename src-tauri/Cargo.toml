@@ -1,8 +1,8 @@
 [package]
 name = "aufsteller"
-version = "2.0.1"
-description = "A Tauri App"
-authors = ["you"]
+version = "2.0.2"
+description = "Eine andere Art Ihre Werkzeuge für [gestallterischen] Arbeiten aufzustellen."
+authors = ["Isaak Engineer"]
 license = ""
 repository = ""
 edition = "2021"

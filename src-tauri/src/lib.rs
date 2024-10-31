@@ -15,6 +15,12 @@ extern crate dirs;
 
 mod applet;
 
+#[derive(Serialize, Deserialize, Debug)]
+struct Notiz {
+	pfad: String,
+	name: String,
+	inhalt: String,
+}
 #[derive(Serialize, Deserialize)]
 struct WorkspaceIndex {
   desktop: Vec<Desktop>,
@@ -175,6 +181,54 @@ fn album_init() -> Result<Vec<String>, String> {
 	}
 	Ok(bildern)
 }
+#[tauri::command]
+fn notizen_init() -> Result<Vec<Notiz>, String> {
+	let home = dirs::home_dir().unwrap();
+	let mut base = PathBuf::from(&home);
+	base.push("Conductor");
+	base.push("Notizen");
+	let mut notizen:Vec<Notiz> = Vec::new();
+	match fs::read_dir(&base) {
+		Ok(entries) => {
+            for entry in entries {
+				match entry {
+					Ok(entry) => {
+						let path = entry.path();
+						if path.is_file() && path.extension().map(|ext| ext == "md").unwrap_or(false) {
+							let mut notiz:Notiz;
+							match fs::read_to_string(path.clone()) {
+								Ok(inhalt) => {
+									notiz = Notiz {
+										pfad: path.to_str().unwrap_or_else(|| "".as_ref()).to_string(),
+										name: path.file_name().unwrap_or_else(|| "".as_ref()).to_string_lossy().into_owned(),
+										inhalt: inhalt,
+									};
+								},
+								Err(e) => {
+									notiz = Notiz {
+										pfad: path.to_str().unwrap_or_else(|| "".as_ref()).to_string(),
+										name: path.file_name().unwrap_or_else(|| "".as_ref()).to_string_lossy().into_owned(),
+										inhalt: "".to_string(),
+									};
+								}
+							}
+							notizen.push(notiz);
+						}
+					}
+					Err(e) => {
+						println!("Error reading entry: {}", e);
+						// Err("könnte nicht lesen".to_string())
+					}
+				}
+			}
+		},
+		Err(e) => {
+			println!("Error reading entry: {}", e);
+			// Err("könnte nicht lesen".to_string())
+		}
+	}
+	Ok(notizen)
+}
 
 #[tauri::command]
 fn directory_open(opener: String, path: String) {
@@ -259,6 +313,8 @@ pub fn run() {
 	tauri::Builder::default()
 		.invoke_handler(tauri::generate_handler![
 			album_init,
+			notizen_init,
+
 			dashboard_config_load,
 			directory_open,
 			app_open,

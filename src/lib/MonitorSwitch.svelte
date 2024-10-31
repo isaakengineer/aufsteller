@@ -19,19 +19,12 @@
 <div class="zeug">
 <header>Monitor Switch</header>
 	<div class="container">
-		<div class="label">
-			<label for="monitor">Input</label>
-		</div>
-		<div class="button-group">
 			<button on:click={switch_a}>HDMI 1</button>
 			<button on:click={switch_b}>HDML 2</button>
-		</div>
 	</div>
 	<div class="container">
-		<div class="label">
-			<label for="root">Root Password</label>
-		</div>
 		<input type="password" id="root" name="root"
+			placeholder="Root Password"
 			bind:value="{password}" />
 	</div>
 	<div class="hinweis">
@@ -59,12 +52,16 @@
 }
 .button-group {
 	display: flex;
+	justify-content: space-between;
 }
 .container {
 	margin-top: 1rem;
 	display: flex;
 	gap: 1rem;
 	vertical-align: baseline;
+	input {
+		flex-grow: 1;
+	}
 	button {
 		padding: .2rem .8rem;
 		font-size: .8rem;
@@ -75,5 +72,8 @@
 		padding: .4rem 0px;
 		display: block;
 	}
+}
+.hinweis {
+	font-size: .8rem;
 }
 </style>
