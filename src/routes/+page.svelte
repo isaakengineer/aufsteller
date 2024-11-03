@@ -93,10 +93,12 @@
 <div class="aufsteller">
 	<div class="notizen">
 		{#if Ausstattung.album}
-			<div class="album" transition:slide|global>
+			<!-- <div class="album" transition:slide|global> -->
+			<div class="album">
 				<div class="bilderrahmen">
 					{#key bildernIndex}
-						<img in:blur={{ duration: 800 }} out:fade src={convertFileSrc(bildern[bildernIndex])} />
+						<!-- <img in:blur|global={{ duration: 800 }} out:fade|global src={convertFileSrc(bildern[bildernIndex])} /> -->
+						<img src={convertFileSrc(bildern[bildernIndex])} />
 					{/key}
 				</div>
 				<div class="albumkontrollen">
@@ -106,7 +108,8 @@
 				</div>
 			</div>
 		{:else if Ausstattung.notizen}
-			<div transition:slide|global>
+			<!-- <div transition:slide|global> -->
+			<div>
 				<div class="notizenkontrollen">
 					<button on:click={() => { Ausstattung.notizen = false; Ausstattung.album = true; }}>Album</button>
 					<button on:click={() => { }}>Open</button>
@@ -116,7 +119,7 @@
 						<div class="notiz">
 							<header on:click={() => { notizenIndex = i; }}>{notiz.name}</header>
 							{#if notizenIndex == i}
-								<div class="inhalt" transition:slide>{notiz.inhalt}</div>
+								<div class="inhalt">{notiz.inhalt}</div>
 							{/if}
 						</div>
 					{/each}
