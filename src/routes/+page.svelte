@@ -119,7 +119,7 @@
 						<div class="notiz">
 							<header on:click={() => { notizenIndex = i; }}>{notiz.name}</header>
 							{#if notizenIndex == i}
-								<div class="inhalt">{notiz.inhalt}</div>
+								<pre class="inhalt">{notiz.inhalt}</pre>
 							{/if}
 						</div>
 					{/each}
