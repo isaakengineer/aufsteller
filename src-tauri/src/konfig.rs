@@ -18,12 +18,46 @@ pub struct Pfadliste {
 }
 
 #[tauri::command]
-pub fn csv_lesen(fach: &str) -> Result<Vec<Pfadliste>, String> {
+pub fn profile_lesen() -> Result<Vec<Pfad>, String> {
+	let mut result: Vec<Pfad> = Vec::new();
+	let mut home = dirs::home_dir().unwrap();
+	let mut base = PathBuf::from(&home);
+	base.push("Conductor");
+	base.push("Profile");
+	if base.exists() && base.is_dir() {
+		for liste in fs::read_dir(&base).unwrap() {
+			if let Ok(liste) = liste {
+			let mut pfad_der_liste = liste.path();
+				if pfad_der_liste.is_dir() {
+					let name = pfad_der_liste.file_stem()
+						.and_then(|os_str| os_str.to_str())
+						.unwrap_or_else(|| "");
+					let profile = Pfad {
+						name: name.to_string(),
+						pfad: pfad_der_liste.to_str().unwrap().to_string(),
+					};
+					result.push(profile);
+				}
+			}
+		}
+	}
+	return Ok(result);
+}
+
+#[tauri::command]
+pub fn csv_lesen(fach: &str, profile: Option<&str>) -> Result<Vec<Pfadliste>, String> {
 // pub fn csv_lesen(fach: &str) {
 	let mut result: Vec<Pfadliste> = Vec::new();
 	let mut home = dirs::home_dir().unwrap();
 	let mut base = PathBuf::from(&home);
 	base.push("Conductor");
+	match profile {
+		Some(profile) => {
+			base.push("Profile");
+			base.push(profile);
+		},
+		None => {}
+	}
 	base.push(fach);
 	println!("nach Fach {:?} suchen!", base);
 	if base.exists() && base.is_dir() {
@@ -53,7 +87,6 @@ pub fn csv_lesen(fach: &str) -> Result<Vec<Pfadliste>, String> {
 													return Err(m);
 												}
 											}
-
 										}
 									},
 									Err(e) => {

@@ -18,7 +18,7 @@ mod konfig;
 
 use applet::{anwendung_oeffnen};
 
-use konfig::{ csv_lesen };
+use konfig::{ csv_lesen, profile_lesen};
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Notiz {
@@ -329,6 +329,7 @@ pub fn run() {
 
 			anwendung_oeffnen,
 			csv_lesen,
+			profile_lesen,
 		])
 		.run(tauri::generate_context!())
 		.expect("error while running tauri application");

@@ -5,12 +5,6 @@
 
 	let listen = [];
 
-	onMount( async () => {
-		listen = await invoke('csv_lesen', { fach: "Dir"}).catch((err) =>  {
-			console.warn(err);
-		});
-	});
-
 	const oeffnen = async (pfad) => {
 		let m = await invoke("anwendung_oeffnen", {
 			exec: "nautilus",

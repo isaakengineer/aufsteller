@@ -16,9 +16,14 @@
 		let projects = await invoke("project_on", {name: project});
 	}
 
-	let elem;
-	let msnry;
-	let refreshFunc = () => {};
+	let profilen = [];
+	let profile = {};
+
+	let webseiten = [];
+	let websuchen = [];
+	let taboreten = [];
+	let dirs = [];
+
 	let bildern = [];
 	let bildernIndex = 0;
 	let notizen = [];
@@ -27,20 +32,39 @@
 	onMount( async () => {
 		bildern = await invoke("album_init");
 		notizen = await invoke("notizen_init");
+		profilen = await invoke("profile_lesen");
+		await init();
 	});
 	console.log("these are items")
 	console.log(items)
 
-	const init = async () => {
-		webseiten = await invoke('csv_lesen', { fach: "Web"}).catch((err) =>  {
-			console.warn(err);
-		});
-		websuchen = await invoke('csv_lesen', { fach: "Suche"}).catch((err) =>  {
-			console.warn(err);
-		});
-		taboreten = await invoke('csv_lesen', { fach: "Taboret"}).catch((err) =>  {
-			console.warn(err);
-		});
+
+
+	const initError = (e) => {
+		Ausstattung.update((a) => { a.meldungen.push(e); return a; });
+		console.warn(e);
+		return [];
+	}
+	const init = async (profile) => {
+		switch(profile) {
+			case "default":
+				webseiten = await invoke('csv_lesen', { fach: "Web"}).catch(initError)
+				websuchen = await invoke('csv_lesen', { fach: "Suche"}).catch(initError)
+				taboreten = await invoke('csv_lesen', { fach: "Taboret"}).catch(initError)
+				dirs = await invoke('csv_lesen', { fach: "Dir"}).catch(initError)
+			break;
+			default:
+				webseiten = await invoke('csv_lesen', { fach: "Web", profile: profile}).catch(initError)
+				websuchen = await invoke('csv_lesen', { fach: "Suche", profile: profile}).catch(initError)
+				taboreten = await invoke('csv_lesen', { fach: "Taboret", profile: profile}).catch(initError)
+				dirs = await invoke('csv_lesen', { fach: "Dir", profile: profile}).catch(initError)
+		}
+	}
+
+	const profileWaechseln = async (p) => {
+		console.log("profile wächseln!")
+		profile = p;
+		init(p.name);
 	}
 
 	// function draw() {
@@ -119,7 +143,9 @@
 			<!-- <button on:click={draw}>draw</button> -->
 		</header>
 		<nav>
-			<div>Default</div>
+			{#each profilen as p}
+				<div on:click={profileWaechseln(p)}>{ p.name }</div>
+			{/each}
 		</nav>
 	</div>
 	<div class="applikationen"></div>
@@ -128,11 +154,11 @@
 	</div>
 	<div id="masonry-grid" class="boxen" >
 		<!-- <Masonry stretchFirst={true} > -->
-			<TaboretBox  />
+			<TaboretBox listen={taboreten}  />
 			<!-- <DirectoryBox on:masonryRefresh={() => {setTimeout(draw(), 10000)}} /> -->
-			<DirectoryBox />
-			<Webseite />
-			<Websuche />
+			<DirectoryBox listen={dirs} />
+			<Webseite links={webseiten} />
+			<Websuche links={webseiten} />
 		<!-- </Masonry> -->
 	</div>
 </div>
