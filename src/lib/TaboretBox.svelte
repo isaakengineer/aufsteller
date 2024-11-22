@@ -3,13 +3,7 @@
 	import { onMount } from "svelte";
     import { Ausstattung } from '../routes/store.js';
 
-	let listen = [];
-
-	onMount( async () => {
-		listen = await invoke('csv_lesen', { fach: "Taboret"}).catch((err) =>  {
-			console.warn(err);
-		});
-	});
+	export let listen = [];
 
 	const oeffnen = async (pfad) => {
 		let m = await invoke("anwendung_oeffnen", {

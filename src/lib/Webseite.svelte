@@ -3,12 +3,6 @@
 	import { onMount } from "svelte";
 
 	export let links = [];
-
-	onMount( async () => {
-		links = await invoke('csv_lesen', { fach: "Web"}).catch((err) =>  {
-			console.warn(err);
-		});
-	});
 </script>
 
 <!-- <div> -->

@@ -31,6 +31,18 @@
 	console.log("these are items")
 	console.log(items)
 
+	const init = async () => {
+		webseiten = await invoke('csv_lesen', { fach: "Web"}).catch((err) =>  {
+			console.warn(err);
+		});
+		websuchen = await invoke('csv_lesen', { fach: "Suche"}).catch((err) =>  {
+			console.warn(err);
+		});
+		taboreten = await invoke('csv_lesen', { fach: "Taboret"}).catch((err) =>  {
+			console.warn(err);
+		});
+	}
+
 	// function draw() {
 	// 	msnry = undefined;
 	// 	let elem_2 = document.querySelector('#masonry-grid');

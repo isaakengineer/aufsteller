@@ -5,12 +5,6 @@
 	export let links = [];
 	let text;
 
-	onMount( async () => {
-		links = await invoke('csv_lesen', { fach: "Suche"}).catch((err) =>  {
-			console.warn(err);
-		});
-	});
-
 	const suche = async(pfad) => {
 		let url = pfad.replace(/%s/, text);
 		invoke("app_start", { name: url });
