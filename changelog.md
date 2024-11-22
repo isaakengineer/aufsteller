@@ -2,11 +2,14 @@
 
 ## [3.2.1]
 
+Neben verschiedene Verbesserung und Fehlerbehebungen:
+
 ### Added
 
 - #Fähigkeit: Profile zu initializieren
 - #Fähigkeit: Websuche neben Webseiten
 - #Verbesserung: bessere Fehlermeldung von Backend falls Dateipfaden nicht existieren
+- #Haushalt: changelog hinzugefügt
 
 ### Changed
 
@@ -36,3 +39,7 @@
 ### Changed
 
 - nicht mehr Projekte durch Conductor öffnen. [Taboret sollte dafür benutzt werden, obwohl die nicht gerade dazu fähig ist]
+
+### Removed
+
+- #Fähigkeit: Projekten zu öffnen [siehe Taboret dafür]
