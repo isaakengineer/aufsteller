@@ -1,6 +1,5 @@
 <script>
 	import { invoke, convertFileSrc } from '@tauri-apps/api/core';
-	import Masonry from 'masonry-layout';
 	import { onMount } from 'svelte';
 	import { fade, slide, blur } from 'svelte/transition';
 
