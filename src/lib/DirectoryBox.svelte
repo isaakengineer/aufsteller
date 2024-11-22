@@ -3,7 +3,7 @@
 	import { onMount } from "svelte";
 	import { Ausstattung } from '../routes/store.js';
 
-	let listen = [];
+	export let listen = [];
 
 	const oeffnen = async (pfad) => {
 		let m = await invoke("anwendung_oeffnen", {

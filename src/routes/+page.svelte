@@ -3,7 +3,6 @@
 	import Masonry from 'masonry-layout';
 	import { onMount } from 'svelte';
 	import { fade, slide, blur } from 'svelte/transition';
-	import Greet from "$lib/Greet.svelte";
 
 	import { Ausstattung } from './store';
 
@@ -11,13 +10,13 @@
 
 	let items = [];
 
-	async function projectOpen(project) {
-		console.log(project)
-		let projects = await invoke("project_on", {name: project});
-	}
+	// async function projectOpen(project) {
+	// 	console.log(project)
+	// 	let projects = await invoke("project_on", {name: project});
+	// }
 
 	let profilen = [];
-	let profile = {};
+	let profile = 'default';
 
 	let webseiten = [];
 	let websuchen = [];
@@ -62,23 +61,9 @@
 	}
 
 	const profileWaechseln = async (p) => {
-		console.log("profile wächseln!")
 		profile = p;
-		init(p.name);
+		init(p);
 	}
-
-	// function draw() {
-	// 	msnry = undefined;
-	// 	let elem_2 = document.querySelector('#masonry-grid');
-	// 	let msnry_2 = new Masonry( elem, {
-	// 		// options
-	// 		itemSelector: '.grid-item',
-	// 		columnWidth: 200,
-	// 		initLayout: false
-	// 	});
-	// 	msnry_2.layout()
-	// 	console.log("to refresh")
-	// }
 
 	import Webseite from "$lib/Webseite.svelte";
 	import Websuche from "$lib/Websuche.svelte";
@@ -92,12 +77,14 @@
 		{#if $Ausstattung.album}
 			<!-- <div class="album" transition:slide|global> -->
 			<div class="album">
-				<div class="bilderrahmen">
-					{#key bildernIndex}
-						<!-- <img in:blur|global={{ duration: 800 }} out:fade|global src={convertFileSrc(bildern[bildernIndex])} /> -->
-						<img src={convertFileSrc(bildern[bildernIndex])} />
-					{/key}
-				</div>
+				{#if bildern.length > 0 }
+					<div class="bilderrahmen">
+						{#key bildernIndex}
+							<!-- <img in:blur|global={{ duration: 800 }} out:fade|global src={convertFileSrc(bildern[bildernIndex])} /> -->
+							<img src={convertFileSrc(bildern[bildernIndex])} />
+						{/key}
+					</div>
+				{/if}
 				<div class="albumkontrollen">
 					<button on:click={() => { bildernIndex = ((bildernIndex == 0) ? bildern.length : bildernIndex) - 1 }}>Vorherrige</button>
 					<button on:click={() => { $Ausstattung.notizen = true; $Ausstattung.album = false; }}>Notizen</button>
@@ -139,31 +126,47 @@
 	</div>
 	<div class="informationen"></div>
 	<div class="arbeitsumgebung">
-		<header>
-			<!-- <button on:click={draw}>draw</button> -->
-		</header>
-		<nav>
+		<nav class="profilen">
+			<div on:click={() => profileWaechseln('default')}>Default</div>
 			{#each profilen as p}
-				<div on:click={profileWaechseln(p)}>{ p.name }</div>
+				<div on:click={profileWaechseln(p.name)}>{ p.name }</div>
 			{/each}
 		</nav>
 	</div>
 	<div class="applikationen"></div>
 	<div class="zeuge">
+		<div class="titel">{ profile }</div>
 		<MonitorSwitch />
 	</div>
 	<div id="masonry-grid" class="boxen" >
-		<!-- <Masonry stretchFirst={true} > -->
 			<TaboretBox listen={taboreten}  />
-			<!-- <DirectoryBox on:masonryRefresh={() => {setTimeout(draw(), 10000)}} /> -->
 			<DirectoryBox listen={dirs} />
 			<Webseite links={webseiten} />
-			<Websuche links={webseiten} />
-		<!-- </Masonry> -->
+			<Websuche links={websuchen} />
 	</div>
 </div>
 
 <style lang="scss">
+.zeuge {
+	display: flex;
+	flex-direction: row-reverse;
+	> .titel {
+		margin-top: 2rem;
+		height: fit-content;
+		font-size: 2rem;
+		transform: rotate(90deg);
+		color: #fff;
+
+	}
+}
+nav.profilen {
+	div {
+		padding: .5rem;
+		width: fit-content;
+		font-size:  1.2rem;
+		background-color: rgba(255, 255, 255, 0.5);
+	}
+}
 .meldung {
 	border-radius: 0 !important;
 	border: none;
