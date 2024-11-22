@@ -54,14 +54,14 @@
 		items = items.concat(Object.keys(dirs.workspaces));
 		console.log("before items", items)
 
-		elem = document.querySelector('.grid');
-		msnry = new Masonry( elem, {
-			// options
-			itemSelector: '.grid-item',
-			columnWidth: 200,
-			// initLayout: false
-		});
-		console.log("this masonry", msnry);
+		// elem = document.querySelector('#masonry-grid');
+		// msnry = new Masonry( elem, {
+		// 	// options
+		// 	itemSelector: '.grid-item',
+		// 	columnWidth: 200,
+		// 	// initLayout: false
+		// });
+		// console.log("this masonry", msnry);
 
 		// refreshFunc = msnry.layout;
 		// refreshFunc()
@@ -69,19 +69,19 @@
 	console.log("these are items")
 	console.log(items)
 
-	function draw() {
-		msnry = undefined;
-		let elem_2 = document.querySelector('.grid');
-		let msnry_2 = new Masonry( elem, {
-			// options
-			itemSelector: '.grid-item',
-			columnWidth: 200,
-			initLayout: false
-		});
-		msnry_2.layout()
-		console.log("to refresh")
+	// function draw() {
+	// 	msnry = undefined;
+	// 	let elem_2 = document.querySelector('#masonry-grid');
+	// 	let msnry_2 = new Masonry( elem, {
+	// 		// options
+	// 		itemSelector: '.grid-item',
+	// 		columnWidth: 200,
+	// 		initLayout: false
+	// 	});
+	// 	msnry_2.layout()
+	// 	console.log("to refresh")
+	// }
 
-	}
 	import WebAppBox from "$lib/WebAppBox.svelte";
 	import MonitorSwitch from "$lib/MonitorSwitch.svelte";
 	import TaboretBox from "$lib/TaboretBox.svelte";
@@ -132,6 +132,9 @@
 	</div>
 	<div class="informationen"></div>
 	<div class="arbeitsumgebung">
+		<header>
+			<!-- <button on:click={draw}>draw</button> -->
+		</header>
 		<nav>
 			<div>Default</div>
 		</nav>
@@ -140,19 +143,42 @@
 	<div class="zeuge">
 		<MonitorSwitch />
 	</div>
-	<div class="boxen grid" >
+	<div id="masonry-grid" class="boxen" >
 		<!-- <Masonry stretchFirst={true} > -->
-			<TaboretBox />
-			<DirectoryBox on:masonryRefresh={() => {
-
-				setTimeout(draw(), 10000)}
-			} />
+			<TaboretBox  />
+			<!-- <DirectoryBox on:masonryRefresh={() => {setTimeout(draw(), 10000)}} /> -->
+			<DirectoryBox />
 			<WebAppBox />
 		<!-- </Masonry> -->
     </div>
 </div>
 
 <style lang="scss">
+#masonry-grid {
+	display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    grid-gap: 1px;
+    grid-auto-rows: minmax(10rem, auto);
+    grid-auto-flow: dense;
+    padding: 1px;
+	.grid-item {
+		padding: 1rem;
+	    font-size: 14px;
+	    font-weight: bold;
+	    text-transform: uppercase;
+	    color: #000;
+	    background-color: #ccc;
+	    border-radius: 10px;
+		&.span-2 {
+		    grid-column-end: span 2;
+			grid-row-end: span 2;
+		}
+		&.span-3 {
+    		grid-column-end: span 3;
+     		grid-row-end: span 4;
+		}
+	}
+}
 button {
 	padding: .3rem .8rem;
 }
@@ -235,7 +261,7 @@ button {
 		"boxen 			arbeitsumgebung notizen"
 		"informationen 	informationen 	notizen"
 		"informationen 	informationen 	kommande";
-	grid-template-columns: 16fr 10rem 3fr;
+	grid-template-columns: 13fr 10rem 5fr;
 	grid-template-rows: 1fr 5rem 1fr 4fr 5rem;
 	overflow: hidden;
 	> .notizen { grid-area: notizen; }

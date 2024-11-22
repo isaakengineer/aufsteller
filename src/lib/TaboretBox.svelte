@@ -1,8 +1,10 @@
 <script>
 	import { invoke } from '@tauri-apps/api/core';
-	import { onMount } from "svelte";
+	import { onMount, createEventDispatcher } from "svelte";
+	const dispatch = createEventDispatcher();
 	let input = {}
 	onMount( async () => {
+		dispatch('masonryRefresh')
 		let config = await invoke("dashboard_config_load", {
 			name: "taboret.json"
 		}).then((data) => {
@@ -14,6 +16,7 @@
 		});
 		input = JSON.parse(config);
 		console.log(input)
+
 	});
 
 </script>
@@ -53,7 +56,7 @@
 	gap: 1rem;
 }
 .workspaces {
-	width: fit-content;
+	/* width: fit-content; */
 	height: fit-content;
 	padding: 0px;
 	margin: .5rem;
