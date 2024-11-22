@@ -3,38 +3,42 @@
 	import { onMount, createEventDispatcher } from "svelte";
 	const dispatch = createEventDispatcher();
 	let input = {}
+	let listen = [];
 	onMount( async () => {
 		dispatch('masonryRefresh')
-		let config = await invoke("dashboard_config_load", {
-			name: "taboret.json"
-		}).then((data) => {
-			console.log("this is data")
-			console.log(data)
-			return data
-		}).catch((err) => {
-			console.log(err)
+		listen = await invoke('csv_lesen', { fach: "Taboret"}).catch((err) =>  {
+			console.warn(err);
 		});
-		input = JSON.parse(config);
-		console.log(input)
+		// let config = await invoke("dashboard_config_load", {
+		// 	name: "taboret.json"
+		// }).then((data) => {
+		// 	console.log("this is data")
+		// 	console.log(data)
+		// 	return data
+		// }).catch((err) => {
+		// 	console.log(err)
+		// });
+		// input = JSON.parse(config);
+		// console.log(input)
 
 	});
 
 </script>
 
-{#if input.hasOwnProperty('name')}
+{#if listen.length > 0 }
 <!-- <header>
 	{input.name}
 </header> -->
 <!-- <div class="app_repos"> -->
-	{#each Object.keys(input.workspaces) as workspace}
+	{#each listen as workspace}
 		<div class="workspaces grid-item">
-			{#if input.workspaces[workspace].length > 0}
-				<header>{workspace}</header>
+			{#if workspace.liste.length > 0}
+				<header>{workspace.name}</header>
 				<div class="list">
-					{#each input.workspaces[workspace] as repo}
+					{#each workspace.liste as repo}
 						<div on:click={() => {invoke("app_open", {
-								exec: input.exec,
-								path: repo.path
+								exec: "taboret",
+								path: repo.pfad
 							}
 							)}}>
 							{repo.name}
@@ -59,7 +63,7 @@
 	/* width: fit-content; */
 	height: fit-content;
 	padding: 0px;
-	margin: .5rem;
+	/* margin: .5rem; */
 	min-width: 11rem;
 	max-width: 40rem;
 	color: white;

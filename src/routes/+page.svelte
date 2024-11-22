@@ -29,42 +29,6 @@
 	onMount( async () => {
 		bildern = await invoke("album_init");
 		notizen = await invoke("notizen_init");
-
-		console.log("bildern", bildern);
-		let config_web = await invoke("dashboard_config_load", {
-			name: "webapp.json"
-		}).then((data) => {
-			return data
-		}).catch((err) => {
-			console.log(err)
-		});
-		let links = JSON.parse(config_web);
-
-		let config_dir = await invoke("dashboard_config_load", {
-			name: "directory.json"
-		}).then((data) => {
-			return data
-		}).catch((err) => {
-			console.log(err)
-		});
-		let dirs = JSON.parse(config_dir);
-		console.log("these are dirs", dirs)
-		console.log("these are links", links)
-		items = items.concat(Object.keys(links));
-		items = items.concat(Object.keys(dirs.workspaces));
-		console.log("before items", items)
-
-		// elem = document.querySelector('#masonry-grid');
-		// msnry = new Masonry( elem, {
-		// 	// options
-		// 	itemSelector: '.grid-item',
-		// 	columnWidth: 200,
-		// 	// initLayout: false
-		// });
-		// console.log("this masonry", msnry);
-
-		// refreshFunc = msnry.layout;
-		// refreshFunc()
 	});
 	console.log("these are items")
 	console.log(items)
@@ -150,34 +114,34 @@
 			<DirectoryBox />
 			<WebAppBox />
 		<!-- </Masonry> -->
-    </div>
+	</div>
 </div>
 
 <style lang="scss">
 #masonry-grid {
 	display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
-    grid-gap: 1px;
-    grid-auto-rows: minmax(10rem, auto);
-    grid-auto-flow: dense;
-    padding: 1px;
+	grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+	grid-gap: 1rem;
+	grid-auto-rows: minmax(4rem, auto);
+	grid-auto-flow: dense;
+	padding: 1px;
 	.grid-item {
 		padding: 1rem;
-	    font-size: 14px;
-	    font-weight: bold;
-	    text-transform: uppercase;
-	    color: #000;
-	    background-color: #ccc;
-	    border-radius: 10px;
-		&.span-2 {
-		    grid-column-end: span 2;
-			grid-row-end: span 2;
-		}
+		font-size: 14px;
+		font-weight: bold;
+		text-transform: uppercase;
+		color: #000;
+		background-color: #ccc;
+		border-radius: 10px;
 		&.span-3 {
-    		grid-column-end: span 3;
-     		grid-row-end: span 4;
+			grid-column-end: span 3;
+			grid-row-end: span 4;
 		}
 	}
+}
+:global(#masonry-grid > .grid-item.span-2) {
+	grid-column-end: span 2;
+	grid-row-end: span 2;
 }
 button {
 	padding: .3rem .8rem;
@@ -191,7 +155,7 @@ button {
 	gap: .2rem;
 	> .notiz {
 		background-color: lightyellow;
-		box-shadow: 0px 0px .5rem rgba(0, 0, 0, .8);
+		box-shadow: 0px 0px .25rem rgba(0, 0, 0, .5);
 		> header {
 			padding: .1rem .5rem;
 			border-bottom: 1px dashed yellow;
@@ -232,7 +196,7 @@ button {
 		margin-right: auto;
 		margin-left: auto;
 		border-radius: .5rem;
-		box-shadow: 0px 0px .5rem rgba(0, 0, 0, .8);
+		box-shadow: 0px 0px .25rem rgba(0, 0, 0, .5);
 		max-width: 100%;
 		max-height: 100%;
 	}
@@ -284,7 +248,7 @@ button {
 			background-color: #333;
 			border: 2px solid gray;
 			border-radius: 1rem;
-			box-shadow: 0px 0px .5rem rgba(0, 0, 0, .8);
+			box-shadow: 0px 0px .25rem rgba(0, 0, 0, .5);
 		}
 	}
 }
@@ -296,21 +260,21 @@ button {
   padding: 1rem 0px;
   overflow-y: auto;
   :global(> section) {
-    border-radius: 4px;
-    margin: 0px 1rem;
-    padding: 1rem 1rem;
-    background-color: rgba(255, 255, 255, 0.75);
-    &:hover {
-      background-color: rgba(255, 255, 255, 1);
-    }
-    :global(> header) {
-      color: rgb(12, 6, 65);
-      text-align: end;
-      font-weight: 700;
-    }
-    :global(> *) {
+	border-radius: 4px;
+	margin: 0px 1rem;
+	padding: 1rem 1rem;
+	background-color: rgba(255, 255, 255, 0.75);
+	&:hover {
+	  background-color: rgba(255, 255, 255, 1);
+	}
+	:global(> header) {
+	  color: rgb(12, 6, 65);
+	  text-align: end;
+	  font-weight: 700;
+	}
+	:global(> *) {
 
-    }
+	}
   }
 }
 .workspace-conductor-app {
@@ -320,22 +284,22 @@ button {
   grid-template-columns: 5fr 3fr;
   > main {
 
-    grid-area: main;
+	grid-area: main;
   }
   > .drawer {
-    grid-area: drawer;
-    > .control-tabs {
-      height: 100vh;
-      overflow-y: auto;
-    }
+	grid-area: drawer;
+	> .control-tabs {
+	  height: 100vh;
+	  overflow-y: auto;
+	}
   }
 }
   .logo.vite:hover {
-    filter: drop-shadow(0 0 2em #747bff);
+	filter: drop-shadow(0 0 2em #747bff);
   }
 
   .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00);
+	filter: drop-shadow(0 0 2em #ff3e00);
   }
 button.action {
   padding: 0px;

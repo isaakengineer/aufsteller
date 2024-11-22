@@ -14,6 +14,9 @@ use toml;
 extern crate dirs;
 
 mod applet;
+mod konfig;
+
+use konfig::{ csv_lesen };
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Notiz {
@@ -328,6 +331,8 @@ pub fn run() {
 			// notes_list
 			// note_read
 			greet, // sample function shipped by Tauri
+
+			csv_lesen,
 		])
 		.run(tauri::generate_context!())
 		.expect("error while running tauri application");
