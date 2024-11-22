@@ -1,14 +1,27 @@
 <script>
 	import { invoke } from '@tauri-apps/api/core';
-	import { onMount, createEventDispatcher } from "svelte";
-	const dispatch = createEventDispatcher()
-	let input = {}
+	import { onMount } from "svelte";
+	import { Ausstattung } from '../routes/store.js';
+
 	let listen = [];
+
 	onMount( async () => {
 		listen = await invoke('csv_lesen', { fach: "Dir"}).catch((err) =>  {
 			console.warn(err);
 		});
 	});
+
+	const oeffnen = async (pfad) => {
+		let m = await invoke("anwendung_oeffnen", {
+			exec: "nautilus",
+			path: pfad
+		}).catch((e) => {
+			console.warn(e);
+			return e;
+		})
+		Ausstattung.update((a) => { a.meldungen.push(m); return a; });
+	}
+
 	import Directory from '$lib/icon/Directory.svelte';
 </script>
 
@@ -20,11 +33,7 @@
 				<div class="panel">
 					{#each workspace.liste as dir}
 						<div class="directory"
-							on:click={() => {invoke("directory_open", {
-								opener: "nautilus",
-								path: dir.pfad
-							});
-							}}>
+							on:click={oeffnen(dir.pfad)}>
 							<div class="icon"><Directory /></div>
 							<div class="name">{dir.name}</div>
 							<div class="path">{dir.pfad}</div>

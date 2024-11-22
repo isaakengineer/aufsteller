@@ -13,7 +13,7 @@ pub fn exec(path: &str) {
 	// argumentString = argumentString + quoteMark;
 	let mut home = dirs::home_dir().unwrap();
     let mut base = PathBuf::from(&home);
-    base.push("Apps");
+    base.push("Anwendungen");
     base.push("zen");
     base.push("zen");
 	// let mut command = Command::new("/home/isaak/Apps/zen/zen");
@@ -21,7 +21,7 @@ pub fn exec(path: &str) {
 	// command.current_dir("~/");
 	// command.arg("--app");
 	// command.arg(argumentString);
-	command.arg("-new-window");
 	command.args([argumentString]);
+	command.arg("-new-window");
 	command.spawn().expect("process failed to execute");
 }

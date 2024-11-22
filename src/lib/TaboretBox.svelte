@@ -1,28 +1,26 @@
 <script>
 	import { invoke } from '@tauri-apps/api/core';
-	import { onMount, createEventDispatcher } from "svelte";
-	const dispatch = createEventDispatcher();
-	let input = {}
+	import { onMount } from "svelte";
+    import { Ausstattung } from '../routes/store.js';
+
 	let listen = [];
+
 	onMount( async () => {
-		dispatch('masonryRefresh')
 		listen = await invoke('csv_lesen', { fach: "Taboret"}).catch((err) =>  {
 			console.warn(err);
 		});
-		// let config = await invoke("dashboard_config_load", {
-		// 	name: "taboret.json"
-		// }).then((data) => {
-		// 	console.log("this is data")
-		// 	console.log(data)
-		// 	return data
-		// }).catch((err) => {
-		// 	console.log(err)
-		// });
-		// input = JSON.parse(config);
-		// console.log(input)
-
 	});
 
+	const oeffnen = async (pfad) => {
+		let m = await invoke("anwendung_oeffnen", {
+			exec: "taboret",
+			path: pfad
+		}).catch((e) => {
+			console.warn(e);
+			return e;
+		})
+		Ausstattung.update((a) => { a.meldungen.push(m); return a; });
+	}
 </script>
 
 {#if listen.length > 0 }
@@ -36,11 +34,7 @@
 				<header>{workspace.name}</header>
 				<div class="list">
 					{#each workspace.liste as repo}
-						<div on:click={() => {invoke("app_open", {
-								exec: "taboret",
-								path: repo.pfad
-							}
-							)}}>
+						<div on:click={oeffnen(repo.pfad)}>
 							{repo.name}
 						</div>
 					{/each}

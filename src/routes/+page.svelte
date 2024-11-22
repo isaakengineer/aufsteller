@@ -4,14 +4,12 @@
 	import { onMount } from 'svelte';
 	import { fade, slide, blur } from 'svelte/transition';
 	import Greet from "$lib/Greet.svelte";
+
+	import { Ausstattung } from './store';
+
 	export let data;
 
 	let items = [];
-
-	let Ausstattung = {
-		album: true,
-		notizen: false,
-	}
 
 	async function projectOpen(project) {
 		console.log(project)
@@ -46,17 +44,16 @@
 	// 	console.log("to refresh")
 	// }
 
-	import WebAppBox from "$lib/WebAppBox.svelte";
+	import Webseite from "$lib/Webseite.svelte";
+	import Websuche from "$lib/Websuche.svelte";
 	import MonitorSwitch from "$lib/MonitorSwitch.svelte";
 	import TaboretBox from "$lib/TaboretBox.svelte";
 	import DirectoryBox from "$lib/DirectoryBox.svelte";
-
-
 </script>
 
 <div class="aufsteller">
 	<div class="notizen">
-		{#if Ausstattung.album}
+		{#if $Ausstattung.album}
 			<!-- <div class="album" transition:slide|global> -->
 			<div class="album">
 				<div class="bilderrahmen">
@@ -67,15 +64,15 @@
 				</div>
 				<div class="albumkontrollen">
 					<button on:click={() => { bildernIndex = ((bildernIndex == 0) ? bildern.length : bildernIndex) - 1 }}>Vorherrige</button>
-					<button on:click={() => { Ausstattung.notizen = true; Ausstattung.album = false; }}>Notizen</button>
+					<button on:click={() => { $Ausstattung.notizen = true; $Ausstattung.album = false; }}>Notizen</button>
 					<button on:click={() => { bildernIndex = (bildernIndex + 1) % bildern.length }}>Nächste</button>
 				</div>
 			</div>
-		{:else if Ausstattung.notizen}
+		{:else if $Ausstattung.notizen}
 			<!-- <div transition:slide|global> -->
 			<div>
 				<div class="notizenkontrollen">
-					<button on:click={() => { Ausstattung.notizen = false; Ausstattung.album = true; }}>Album</button>
+					<button on:click={() => { $Ausstattung.notizen = false; $Ausstattung.album = true; }}>Album</button>
 					<button on:click={() => { }}>Open</button>
 				</div>
 				<div class="notizrahmen">
@@ -92,7 +89,17 @@
 		{/if}
 	</div>
 	<div class="kommande">
-		<!-- <div>Kommande Here</div> -->
+		{#if $Ausstattung.meldungen.length > 0}
+			{#each $Ausstattung.meldungen as m}
+				<div class="meldung">
+					<div class="nachricht">{ m }</div>
+					<button class="kontrolle" on:click={() => {
+						Ausstattung.update((a) => { a.meldungen = a.meldungen.slice(0, -1);
+						console.log("we removed one!", a); return a; });
+					}}>X</button>
+				</div>
+			{/each}
+		{/if}
 	</div>
 	<div class="informationen"></div>
 	<div class="arbeitsumgebung">
@@ -112,12 +119,24 @@
 			<TaboretBox  />
 			<!-- <DirectoryBox on:masonryRefresh={() => {setTimeout(draw(), 10000)}} /> -->
 			<DirectoryBox />
-			<WebAppBox />
+			<Webseite />
+			<Websuche />
 		<!-- </Masonry> -->
 	</div>
 </div>
 
 <style lang="scss">
+.meldung {
+	border-radius: 0 !important;
+	border: none;
+	box-shadow: none;
+	background-color: #aaa;
+	display: flex;
+	justify-content: space-between;
+	> .nachricht {
+		margin: .5rem;
+	}
+}
 #masonry-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));

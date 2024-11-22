@@ -16,6 +16,8 @@ extern crate dirs;
 mod applet;
 mod konfig;
 
+use applet::{anwendung_oeffnen};
+
 use konfig::{ csv_lesen };
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -233,13 +235,7 @@ fn notizen_init() -> Result<Vec<Notiz>, String> {
 	Ok(notizen)
 }
 
-#[tauri::command]
-fn directory_open(opener: String, path: String) {
-	println!("path: {}", path);
-	let mut command = Command::new(opener);
-	command.arg(path);
-	command.spawn().expect("failed to open directory with supplied opener.");
-}
+
 #[tauri::command]
 fn app_open(exec: String, path: String) {
 	println!("exec: {}", exec);
@@ -319,7 +315,6 @@ pub fn run() {
 			notizen_init,
 
 			dashboard_config_load,
-			directory_open,
 			app_open,
 			app_start,
 			projects_list,
@@ -332,6 +327,7 @@ pub fn run() {
 			// note_read
 			greet, // sample function shipped by Tauri
 
+			anwendung_oeffnen,
 			csv_lesen,
 		])
 		.run(tauri::generate_context!())
