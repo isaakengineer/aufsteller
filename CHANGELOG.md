@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.2.1]
+## [3.2.1] - 2024-11-22
 
 Neben verschiedene Verbesserung und Fehlerbehebungen:
 
