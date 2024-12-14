@@ -22,7 +22,7 @@ pub fn profile_lesen() -> Result<Vec<Pfad>, String> {
 	let mut result: Vec<Pfad> = Vec::new();
 	let mut home = dirs::home_dir().unwrap();
 	let mut base = PathBuf::from(&home);
-	base.push("Conductor");
+	base.push("Aufsteller");
 	base.push("Profile");
 	if base.exists() && base.is_dir() {
 		for liste in fs::read_dir(&base).unwrap() {
@@ -50,7 +50,7 @@ pub fn csv_lesen(fach: &str, profile: Option<&str>) -> Result<Vec<Pfadliste>, St
 	let mut result: Vec<Pfadliste> = Vec::new();
 	let mut home = dirs::home_dir().unwrap();
 	let mut base = PathBuf::from(&home);
-	base.push("Conductor");
+	base.push("Aufsteller");
 	match profile {
 		Some(profile) => {
 			base.push("Profile");

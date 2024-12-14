@@ -6,14 +6,13 @@
 	export let listen = [];
 
 	const oeffnen = async (pfad) => {
-		let m = await invoke("anwendung_oeffnen", {
+		await invoke("anwendung_oeffnen", {
 			exec: "nautilus",
 			path: pfad
 		}).catch((e) => {
 			console.warn(e);
-			return e;
+			Ausstattung.update((a) => { a.meldungen.push(e); return a; });
 		})
-		Ausstattung.update((a) => { a.meldungen.push(m); return a; });
 	}
 
 	import Directory from '$lib/icon/Directory.svelte';

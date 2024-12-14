@@ -1,5 +1,11 @@
 # Changelog
 
+##
+
+### Changed
+
+- der Hauptfach sollte nicht mehr `Conductor` heißen, sondern `Aufsteller`
+
 ## [3.2.1] - 2024-11-22
 
 Neben verschiedene Verbesserung und Fehlerbehebungen:
