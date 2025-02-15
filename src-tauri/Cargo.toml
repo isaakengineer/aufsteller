@@ -2,9 +2,11 @@
 name = "aufsteller"
 version = "3.2.3"
 description = "Eine andere Art Ihre Werkzeuge für [gestallterischen] Arbeiten aufzustellen."
-authors = ["Isaak Engineer"]
-license = ""
-repository = ""
+authors = ["Isaak Engineer <i-engineer@tutamail.com>"]
+license = "AGPL-3.0-only"
+repository = "https://git.schloosser.net/aufsteller/aufsteller.git"
+
+
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
