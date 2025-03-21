@@ -8,9 +8,25 @@
 
 A different type of application launcher for Linux desktop;
 
-It is particularly integrated within other offerings by Techne group.
+It is particularly well-integrated within other offerings by [Techne group](https://techne.schloosser.com).
 
 It is optimized for mouse use, unlike Gnome which does a brilliant job to be ready for touch, or other offerings which focus on keyboard use.
+
+Designed for polymath and sophists in mind.
+
+## Features
+
+- **Profile**: We believe that a sustainable and humane future requires resource-conscious usage of hardware; Instead of using one _work-PC_ and one _home-PC_ or many other similar setups, our approach is to provide the option to define profiles for various roles and responsibilities, each of which would have otherwise required a whole new setup, or desk environment.
+- **Boxes [Containing Links]** write down the paths or urls which you frequently use in a simple CSV file to easily access them. Following apps are designed by default to be openned by processing these lists:
+	- websites
+  - directories
+  - [taboret](https://taboret.techne.schloosser.com)s
+  - search enginges
+- **Virtualization of Traditional Work Desk Environment**: Post-it notes and an album or framed photo/certificate are typical features of traditional work desk. _Aufsteller_ offers the following:
+  - **Notes**: written in Markdown; _read-only_ for the purpose of easy access; the goal of this app is not replacing any traditional note-taking application.
+  - **Album**: a series of photos; Family photos, idols, or information/data/reminders in the form of `jpg` or `png` data.
+- **Quick Command Line Tools**: There are many underappreciated CLI-tools out there. Our goal is to provide an interface to allow easy access to their functionalities through a GUI-interface. Currently, the following utilities are provided by default:
+  - **Monitor switch**
 
 ## Status
 
