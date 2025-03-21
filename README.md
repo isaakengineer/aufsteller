@@ -2,6 +2,8 @@
 
 ## Screenshots
 
+## Quickstart Guide
+
 ## Description
 
 A different type of application launcher for Linux desktop;
