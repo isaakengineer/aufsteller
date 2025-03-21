@@ -2,7 +2,13 @@
 
 ## Screenshots
 
+![aufsteller-screenshot](./README/screenshots/v3.2.3.png "Screenshot of Aufsteller 3.2.3")
+
 ## Quickstart Guide
+
+Simply download, install and configure.
+
+Hope your computer desktop --i.e. your virtual desk-- is a place of joy than an environment you have to constantly struggle with.
 
 ### Installation
 
