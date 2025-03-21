@@ -4,6 +4,32 @@
 
 ## Quickstart Guide
 
+### Installation
+
+#### Package
+
+Download one of the available bundles from our [storage](https://console.schloosser.net/browser/aufsteller).
+
+Currently avaiable formats:
+- DEB 64
+- RPM 64
+- App Image 64
+
+#### Build from source
+
+Download the repo and run the following command:
+
+```
+deno install
+deno run tauri build
+```
+
+### Configure
+
+Make a configuration folder in your home directory as you can find in the [example directory](./example) in this repo.
+
+PS. in order to craete additional profiles, just craete a new directory with the name of the profile and put it under the Profile folder.
+
 ## Description
 
 A different type of application launcher for Linux desktop;
