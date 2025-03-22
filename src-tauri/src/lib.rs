@@ -168,10 +168,17 @@ fn dashboard_config_load(name: String) -> Result<String, String> {
 }
 
 #[tauri::command]
-fn album_init() -> Result<Vec<String>, String> {
+fn album_init(profile: Option<&str>) -> Result<Vec<String>, String> {
     let home = dirs::home_dir().unwrap();
     let mut base = PathBuf::from(&home);
     base.push("Aufsteller");
+    match profile {
+        Some(profile) => {
+            base.push("Profile");
+            base.push(profile);
+        }
+        None => {}
+    }
     base.push("Album");
     let mut bildern = Vec::new();
     match fs::read_dir(&base) {
@@ -201,10 +208,17 @@ fn album_init() -> Result<Vec<String>, String> {
     Ok(bildern)
 }
 #[tauri::command]
-fn notizen_init() -> Result<Vec<Notiz>, String> {
+fn notizen_init(profile: Option<&str>) -> Result<Vec<Notiz>, String> {
     let home = dirs::home_dir().unwrap();
     let mut base = PathBuf::from(&home);
     base.push("Aufsteller");
+    match profile {
+        Some(profile) => {
+            base.push("Profile");
+            base.push(profile);
+        }
+        None => {}
+    }
     base.push("Notizen");
     let mut notizen: Vec<Notiz> = Vec::new();
     match fs::read_dir(&base) {

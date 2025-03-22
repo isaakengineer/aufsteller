@@ -1,6 +1,6 @@
 [package]
 name = "aufsteller"
-version = "3.2.5"
+version = "3.3.0"
 description = "Eine andere Art Ihre Werkzeuge für [gestallterischen] Arbeiten aufzustellen."
 authors = ["Isaak Engineer <i-engineer@tutamail.com>"]
 license = "AGPL-3.0-only"

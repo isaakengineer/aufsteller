@@ -1,7 +1,7 @@
 {
 	"name": "aufsteller",
 	"private": true,
-	"version": "3.2.5",
+	"version": "3.3.0",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
@@ -16,6 +16,7 @@
 		"@tauri-apps/api": ">=2.0.0",
 		"@tauri-apps/plugin-cli": "~2.0.0",
 		"@tauri-apps/plugin-shell": ">=2.0.0",
+		"markdown-it": "^14.1.0",
 		"svelte-bricks": "^0.2.1",
 		"svelte-preprocess": "^5.0.3",
 		"@sveltejs/kit": "^1",

@@ -7,7 +7,7 @@
 
 	const oeffnen = async (pfad) => {
 		await invoke("anwendung_oeffnen", {
-			exec: "nautilus",
+			exec: "open",
 			path: pfad,
 		}).catch((e) => {
 			console.warn(e);
@@ -29,7 +29,7 @@
 				<div class="panel">
 					{#each workspace.liste as dir}
 						<div class="directory" on:click={oeffnen(dir.pfad)}>
-							<div class="icon"><Directory /></div>
+							<!-- <div class="icon"><Directory /></div> -->
 							<div class="name">{dir.name}</div>
 							<div class="path">{dir.pfad}</div>
 						</div>
@@ -58,16 +58,17 @@
 		overflow: hidden;
 		> .panel {
 			max-height: 100%;
-
 			overflow: auto;
 			display: flex;
 			flex-direction: column;
-			gap: 0.25rem;
+			gap: 1px;
+			background-color: orange;
 			> .directory {
-				display: grid;
-				grid-template-columns: 2.5rem auto;
-				grid-template-rows: 1fr 1fr;
-				padding: 0.25rem;
+				/* display: grid; */
+				/* grid-template-columns: 2.5rem auto; */
+				/* grid-template-rows: 1fr 1fr; */
+				padding: 0.5rem;
+				background-color: lightyellow;
 				&:hover {
 					cursor: pointer;
 					background-color: lightgoldenrodyellow;
@@ -79,6 +80,8 @@
 					color: gray;
 					font-size: 0.7rem;
 					grid-column-start: 2;
+					text-align: end;
+					color: darkred;
 				}
 				> .icon {
 					width: 1.5rem;
