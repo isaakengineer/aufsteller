@@ -51,7 +51,7 @@ Designed for polymath and sophists in mind.
 - **Profile**: We believe that a sustainable and humane future requires resource-conscious usage of hardware; Instead of using one _work-PC_ and one _home-PC_ or many other similar setups, our approach is to provide the option to define profiles for various roles and responsibilities, each of which would have otherwise required a whole new setup, or desk environment.
 - **Boxes [Containing Links]** write down the paths or urls which you frequently use in a simple CSV file to easily access them. Following apps are designed by default to be openned by processing these lists:
 	- websites
-  - directories
+  - **bookmark**: for directories, files, etc.
   - [taboret](https://taboret.techne.schloosser.com)s
   - search enginges
 - **Virtualization of Traditional Work Desk Environment**: Post-it notes and an album or framed photo/certificate are typical features of traditional work desk. _Aufsteller_ offers the following:

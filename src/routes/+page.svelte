@@ -3,9 +3,12 @@
 	import { onMount } from "svelte";
 	import { fade, slide, blur } from "svelte/transition";
 
+	import markdownit from "markdown-it";
 	import { Ausstattung } from "./store";
 
 	export let data;
+
+	const md = markdownit();
 
 	let items = [];
 
@@ -54,6 +57,8 @@
 	const init = async (profile) => {
 		switch (profile) {
 			case "default":
+				bildern = await invoke("album_init");
+				notizen = await invoke("notizen_init");
 				webseiten = await invoke("csv_lesen", { fach: "Web" }).catch(
 					initError,
 				);
@@ -63,11 +68,13 @@
 				taboreten = await invoke("csv_lesen", {
 					fach: "Taboret",
 				}).catch(initError);
-				dirs = await invoke("csv_lesen", { fach: "Dir" }).catch(
+				dirs = await invoke("csv_lesen", { fach: "Bookmark" }).catch(
 					initError,
 				);
 				break;
 			default:
+				bildern = await invoke("album_init", { profile: profile });
+				notizen = await invoke("notizen_init", { profile: profile });
 				webseiten = await invoke("csv_lesen", {
 					fach: "Web",
 					profile: profile,
@@ -81,7 +88,7 @@
 					profile: profile,
 				}).catch(initError);
 				dirs = await invoke("csv_lesen", {
-					fach: "Dir",
+					fach: "Bookmark",
 					profile: profile,
 				}).catch(initError);
 		}
@@ -157,7 +164,9 @@
 								{notiz.name}
 							</header>
 							{#if notizenIndex == i}
-								<pre class="inhalt">{notiz.inhalt}</pre>
+								<pre class="inhalt">{@html md.render(
+										notiz.inhalt,
+									)}</pre>
 							{/if}
 						</div>
 					{/each}
