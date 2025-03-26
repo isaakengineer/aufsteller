@@ -188,7 +188,10 @@ fn album_init(profile: Option<&str>) -> Result<Vec<String>, String> {
                     Ok(entry) => {
                         let path = entry.path();
                         if path.is_file()
-                            && path.extension().map(|ext| ext == "jpg").unwrap_or(false)
+                            && path
+                                .extension()
+                                .map(|ext| (ext == "jpg" || ext == "png"))
+                                .unwrap_or(false)
                         {
                             bildern.push(path.to_str().unwrap().to_string());
                         }
