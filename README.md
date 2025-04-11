@@ -60,19 +60,26 @@ Designed for polymath and sophists in mind.
 - **Quick Command Line Tools**: There are many underappreciated CLI-tools out there. Our goal is to provide an interface to allow easy access to their functionalities through a GUI-interface. Currently, the following utilities are provided by default:
   - **Monitor switch**
 
-## Status
+## Imprint
 
-### Maturity
+### Dedication
+
+**For my soulmate without whose love I could not afford my volunteer work!**
+
+### Quality
 
 - quality of source code: MVP 2
 - quality of documentation: README + Bespiel
 - stage of product growth: anfang
 
-### Dedication
-
-_to my soulamte_. **Valentine Gift 2025**.
-
 ### Links
+
+#### Companies
+
+- Developer Group: **[Techne](https://techne.schloosser.com)**
+- Dveloper group's parent organisation: **[Schlösser](https://schloosser.com)**
+
+#### Source-Code
 
 - main git repo: https://git.schloosser.net/aufsteller/aufsteller.git
 
