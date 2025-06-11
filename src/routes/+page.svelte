@@ -99,6 +99,19 @@
 		init(p);
 	};
 
+	const oeffnen = async (pfad) => {
+		await invoke("anwendung_oeffnen", {
+			exec: "open",
+			path: pfad,
+		}).catch((e) => {
+			console.warn(e);
+			Ausstattung.update((a) => {
+				a.meldungen.push(e);
+				return a;
+			});
+		});
+	};
+
 	import Webseite from "$lib/Webseite.svelte";
 	import Websuche from "$lib/Websuche.svelte";
 	import MonitorSwitch from "$lib/MonitorSwitch.svelte";
@@ -151,7 +164,7 @@
 							$Ausstattung.album = true;
 						}}>Album</button
 					>
-					<button on:click={() => {}}>Open</button>
+					<button on:click={oeffnen(notizen[notizenIndex].pfad)}>Open</button>
 				</div>
 				<div class="notizrahmen">
 					{#each notizen as notiz, i}
@@ -265,11 +278,12 @@
 		display: flex;
 		justify-content: space-between;
 		background-color: #ccffff;
-		margin: 0px 0.5rem;
-		padding: 0.5rem;
+		margin: 0px 0.25rem;
+		padding: 0.25rem;
 		> .nachricht {
 			/* padding: 0.5rem; */
-			margin: 0.5rem;
+			margin: 0.25rem;
+			word-break: break-all;
 			> button {
 				display: inline-block;
 				background: transparent;
@@ -487,5 +501,6 @@
 	}
 	.kommande {
 		overflow-y: auto;
+		overflow-x: hidden;
 	}
 </style>
