@@ -9,6 +9,7 @@
 	{#if links.length > 0 }
 		{#each links as linkBox }
 			<div class="linkliste grid-item">
+				<div class="content">
 				<header>{linkBox.name}</header>
 				<div class="array">
 					{#each linkBox.liste as app}
@@ -16,6 +17,7 @@
 							invoke("app_start", {name: app.pfad});
 						}}>{app.name}</div>
 					{/each}
+				</div>
 				</div>
 			</div>
 		{/each}
@@ -34,32 +36,35 @@
 	border-radius: 1rem;
 	background-color: #2832c2;
 	border-color: lightsteelblue;
-	> header {
-		box-sizing: border-box;
-		padding: .5rem;
-		/* margin-bottom: .4rem; */
-		text-align: center;
-		text-transform: capitalize;
-		font-weight: 800;
-		/* font-size: .9rem; */
-		color: #eee;
-		border-bottom: 2px solid lightsteelblue;
+	.content {
+		> header {
+			box-sizing: border-box;
+			padding: .5rem;
+			/* margin-bottom: .4rem; */
+			text-align: center;
+			text-transform: capitalize;
+			font-weight: 800;
+			/* font-size: .9rem; */
+			color: #eee;
+			border-bottom: 2px solid lightsteelblue;
     }
     > .array {
-		> .app {
-			padding: .5rem .8rem;
-			cursor: pointer;
-			background-color: #2832c2;
-			color: #eee;
-			&:hover {
-				background-color: lightskyblue;
-				color: #333;
-			}
+			> .app {
+				padding: .5rem .8rem;
+				cursor: pointer;
+				background-color: #2832c2;
+				color: #eee;
+				&:hover {
+					background-color: lightskyblue;
+					color: #333;
+				}
 
+			}
+		}
+		*:last-child {
+			border-radius: 0rem 0rem .8rem .8rem;
 		}
 	}
-	*:last-child {
-		border-radius: 0rem 0rem .8rem .8rem;
-	}
+
 }
 </style>

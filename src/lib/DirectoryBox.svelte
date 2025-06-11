@@ -24,6 +24,7 @@
 {#if listen.length > 0}
 	{#each listen as workspace}
 		<div class="faechern grid-item span-2">
+			<div class="content">
 			{#if workspace.liste.length > 0}
 				<header>{workspace.name}</header>
 				<div class="panel">
@@ -36,6 +37,7 @@
 					{/each}
 				</div>
 			{/if}
+			</div>
 		</div>
 	{/each}
 {/if}
@@ -50,49 +52,52 @@
 		background-color: lightyellow !important;
 		border-color: orangered !important;
 		max-width: 18rem;
-		> header {
-			box-sizing: border-box;
-			padding: 0.5rem;
-			border-bottom: 2px solid orangered;
-			font-weight: 700;
-		}
-		overflow: hidden;
-		> .panel {
-			max-height: 100%;
-			overflow: auto;
-			display: flex;
-			flex-direction: column;
-			gap: 1px;
-			background-color: orange;
-			> .directory {
-				/* display: grid; */
-				/* grid-template-columns: 2.5rem auto; */
-				/* grid-template-rows: 1fr 1fr; */
+		.content {
+			> header {
+				box-sizing: border-box;
 				padding: 0.5rem;
-				background-color: lightyellow;
-				&:hover {
-					cursor: pointer;
-					background-color: lightgoldenrodyellow;
-				}
-				> .name {
-					font-size: 0.9rem;
-				}
-				> .path {
-					color: gray;
-					font-size: 0.6rem;
-					grid-column-start: 2;
-					text-align: end;
-					color: darkred;
-				}
-				> .icon {
-					width: 1.5rem;
-					height: 1.5rem;
-					float: left;
+				border-bottom: 2px solid orangered;
+				font-weight: 700;
+			}
+			overflow: hidden;
+			> .panel {
+				max-height: 100%;
+				overflow: auto;
+				display: flex;
+				flex-direction: column;
+				gap: 1px;
+				background-color: orange;
+				> .directory {
+					/* display: grid; */
+					/* grid-template-columns: 2.5rem auto; */
+					/* grid-template-rows: 1fr 1fr; */
 					padding: 0.5rem;
-					grid-row-start: 1;
-					grid-row-end: 3;
+					background-color: lightyellow;
+					&:hover {
+						cursor: pointer;
+						background-color: lightgoldenrodyellow;
+					}
+					> .name {
+						font-size: 0.9rem;
+					}
+					> .path {
+						color: gray;
+						font-size: 0.6rem;
+						grid-column-start: 2;
+						text-align: end;
+						color: darkred;
+					}
+					> .icon {
+						width: 1.5rem;
+						height: 1.5rem;
+						float: left;
+						padding: 0.5rem;
+						grid-row-start: 1;
+						grid-row-end: 3;
+					}
 				}
 			}
 		}
+
 	}
 </style>

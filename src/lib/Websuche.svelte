@@ -14,6 +14,7 @@
 {#if links.length > 0 }
 	{#each links as linkBox }
 		<div class="linkliste grid-item">
+			<div class="content">
 			<header>{linkBox.name}</header>
 			<div class="array">
 				{#each linkBox.liste as app}
@@ -23,6 +24,7 @@
 			<footer>
 				<input type="text" bind:value={text} />
 			</footer>
+			</div>
 		</div>
 	{/each}
 {/if}
@@ -42,36 +44,39 @@ $dunklefarbe: #7342d9;
 	border-radius: 1rem;
 	background-color: $dunklefarbe;
 	border-color: $hellefarbe;
-	> header {
-		box-sizing: border-box;
-		padding: .5rem;
-		/* margin-bottom: .4rem; */
-		text-align: center;
-		text-transform: capitalize;
-		font-weight: 800;
-		/* font-size: .9rem; */
-		color: #eee;
-		border-bottom: 2px solid $hellefarbe;
+	.content {
+		> header {
+			box-sizing: border-box;
+			padding: .5rem;
+			/* margin-bottom: .4rem; */
+			text-align: center;
+			text-transform: capitalize;
+			font-weight: 800;
+			/* font-size: .9rem; */
+			color: #eee;
+			border-bottom: 2px solid $hellefarbe;
     }
     > .array {
-		> .app {
-			padding: .5rem .8rem;
-			cursor: pointer;
-			background-color: $dunklefarbe;
-			color: #eee;
-			&:hover {
-				background-color: $hellefarbe;
-				color: #333;
+			> .app {
+				padding: .5rem .8rem;
+				cursor: pointer;
+				background-color: $dunklefarbe;
+				color: #eee;
+				&:hover {
+					background-color: $hellefarbe;
+					color: #333;
+				}
+			}
+		}
+		> footer {
+			border-radius: 0rem 0rem .8rem .8rem;
+			input {
+				width: 100%;
+				margin: 0px;
+				border-radius: 0rem 0rem .8rem .8rem;
 			}
 		}
 	}
-	> footer {
-		border-radius: 0rem 0rem .8rem .8rem;
-		input {
-			width: 100%;
-			margin: 0px;
-			border-radius: 0rem 0rem .8rem .8rem;
-		}
-	}
+
 }
 </style>

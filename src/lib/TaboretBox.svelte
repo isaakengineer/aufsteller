@@ -24,6 +24,7 @@
 <!-- <div class="app_repos"> -->
 	{#each listen as workspace}
 		<div class="workspaces grid-item">
+			<div class="content">
 			{#if workspace.liste.length > 0}
 				<header>{workspace.name}</header>
 				<div class="list">
@@ -35,6 +36,7 @@
 				</div>
 
 			{/if}
+			</div>
 		</div>
 	{/each}
 <!-- </div> -->
@@ -55,25 +57,28 @@
 	min-width: 11rem;
 	max-width: 40rem;
 	color: white;
-	> header {
-		padding: .5rem 1rem;
-		border-bottom: 2px solid #999;
-	}
-	.list {
-		> div {
+	.content {
+		> header {
 			padding: .5rem 1rem;
-			cursor: pointer;
-			&:hover {
-				background-color: #666;
-			}
-			&:last-child {
-				border-radius: 0px 0px 1rem 1rem;
-			}
-			&:before {
-				/* content: "-"; */
-				padding: .2rem;
+			border-bottom: 2px solid #999;
+		}
+		.list {
+			> div {
+				padding: .5rem 1rem;
+				cursor: pointer;
+				&:hover {
+					background-color: #666;
+				}
+				&:last-child {
+					border-radius: 0px 0px 1rem 1rem;
+				}
+				&:before {
+					/* content: "-"; */
+					padding: .2rem;
+				}
 			}
 		}
 	}
+
 }
 </style>

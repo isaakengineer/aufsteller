@@ -1,6 +1,6 @@
 <script>
 	import { invoke, convertFileSrc } from "@tauri-apps/api/core";
-	import { onMount } from "svelte";
+	import { onMount, afterUpdate } from "svelte";
 	import { fade, slide, blur } from "svelte/transition";
 
 	import markdownit from "markdown-it";
@@ -112,6 +112,30 @@
 		});
 	};
 
+	function resizeGridItem(item){
+	  let grid = document.getElementsByClassName("boxen")[0];
+	  let rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
+	  let rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap'));
+	  let rowSpan = Math.ceil((item.querySelector('.content').getBoundingClientRect().height+rowGap)/(rowHeight+rowGap));
+	    item.style.gridRowEnd = "span "+rowSpan;
+	}
+
+	function resizeAllGridItems() {
+		let allItems = document.getElementsByClassName("grid-item");
+		Array.from(allItems).forEach(item => resizeGridItem(item));
+	}
+
+	function resizeInstance(instance){
+		let item = instance.elements[0];
+		resizeGridItem(item);
+	}
+
+	window.onload = resizeAllGridItems();
+	window.addEventListener("resize", resizeAllGridItems);
+	afterUpdate(() => {
+		resizeAllGridItems()
+	})
+
 	import Webseite from "$lib/Webseite.svelte";
 	import Websuche from "$lib/Websuche.svelte";
 	import MonitorSwitch from "$lib/MonitorSwitch.svelte";
@@ -121,6 +145,7 @@
 
 <div class="aufsteller">
 	<div class="notizen">
+		<button on:click={resizeAllGridItems}>re</button>
 		{#if $Ausstattung.album}
 			<!-- <div class="album" transition:slide|global> -->
 			<div class="album">
@@ -293,11 +318,9 @@
 	}
 	#masonry-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
-		grid-gap: 1rem;
-		grid-auto-rows: minmax(4rem, auto);
-		grid-auto-flow: dense;
-		padding: 1px;
+		grid-gap: 10px;
+		grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
+		grid-auto-rows: 20px;
 		.grid-item {
 			padding: 1rem;
 			font-size: 14px;
@@ -312,10 +335,10 @@
 			}
 		}
 	}
-	:global(#masonry-grid > .grid-item.span-2) {
+	/* :global(#masonry-grid > .grid-item.span-2) {
 		grid-column-end: span 2;
 		grid-row-end: span 2;
-	}
+	} */
 	button {
 		padding: 0.3rem 0.8rem;
 	}
