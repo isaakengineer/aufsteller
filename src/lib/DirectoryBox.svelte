@@ -49,6 +49,7 @@
 		/* margin-top: .5rem; */
 		background-color: lightyellow !important;
 		border-color: orangered !important;
+		max-width: 18rem;
 		> header {
 			box-sizing: border-box;
 			padding: 0.5rem;
@@ -78,7 +79,7 @@
 				}
 				> .path {
 					color: gray;
-					font-size: 0.7rem;
+					font-size: 0.6rem;
 					grid-column-start: 2;
 					text-align: end;
 					color: darkred;
